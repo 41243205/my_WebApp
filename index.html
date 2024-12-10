@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>題目解鎖系統</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+      line-height: 1.6;
+    }
+    .question {
+      margin: 20px 0;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      background-color: #f9f9f9;
+    }
+    .hidden {
+      display: none;
+    }
+    .error {
+      color: red;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+  <h1>找到旗子編號並解鎖題目</h1>
+
+  <!-- 密碼輸入區 -->
+  <div>
+    <label for="password">輸入旗子編號：</label>
+    <input type="text" id="password" placeholder="輸入編號">
+    <button id="unlock-btn">解鎖題目</button>
+    <p id="error-message" class="error hidden">密碼錯誤，請重試。</p>
+  </div>
+
+  <!-- 已解鎖的題目區 -->
+  <div id="questions-container"></div>
+
+  <script>
+    // 題目及密碼對應
+    const questions = {
+      "1": "跳一段apet的舞蹈並拍成影片",
+      "2": "壘球會比賽幾局?（以台灣奧委會為主）",
+      "3": "找兩個人合力完成指定動作並拍照",
+      "4": "雲林最北的鄉鎮是哪個鎮?",
+      "5": "拍一張網球老師的照片",
+      "6": "同時是虎科大副校長和材料科學與工程系教授是哪一位？",
+      "7": "找三個人在階梯上合力完成指定動作並拍照",
+      "8": "跟最近的樹合照",
+      "9": "對面是什麼國小?",
+      "10": "同心公園一位蔗農拿著一把甘蔗的雕像。該甘蔗是從南非引進的_蔗種，比舊的_蔗種糖度高2倍。請填寫兩底線處的答案。（英文請大寫）",
+      "11": "解出摩斯密碼並錄影完成指定動作",
+      "12": "雲林最靠海的鄉鎮是哪個鎮?",
+      "13": "找一位路人玩黑白猜連續贏兩局並錄影",
+      "14": "虎尾糖廠的小火車叫什麼？製糖期是幾月至幾月？",
+      "15": "Icyball冰球樂團在12/7的表演中唱哪四首?",
+      "16": "找一個人合力完成指定動作並拍照",
+      "17": "跟雕像做一樣的姿勢並拍照",
+      "18": "找四個人合力完成指定動作並拍照",
+      "19": "解出摩斯密碼並錄影完成指定動作",
+      "20": "褒忠的公園景點在哪裡?",
+    };
+
+    // 已解鎖的題目
+    const unlockedQuestions = new Set();
+
+    // 取得 DOM 元素
+    const passwordInput = document.getElementById("password");
+    const unlockBtn = document.getElementById("unlock-btn");
+    const errorMessage = document.getElementById("error-message");
+    const questionsContainer = document.getElementById("questions-container");
+
+    // 解鎖題目功能
+    unlockBtn.addEventListener("click", () => {
+      const password = passwordInput.value.trim();
+
+      // 檢查密碼是否正確
+      if (questions[password] && !unlockedQuestions.has(password)) {
+        // 顯示題目
+        displayQuestion(password, questions[password]);
+        unlockedQuestions.add(password);
+
+        // 清空輸入框和錯誤訊息
+        passwordInput.value = "";
+        errorMessage.classList.add("hidden");
+      } else {
+        // 密碼錯誤
+        errorMessage.classList.remove("hidden");
+      }
+    });
+
+    // 顯示解鎖題目
+    function displayQuestion(password, questionText) {
+      const questionDiv = document.createElement("div");
+      questionDiv.className = "question";
+      questionDiv.innerHTML = `
+        <h3>${questionText}</h3>
+        <textarea rows="4" cols="50" placeholder="輸入答案"></textarea>
+      `;
+      questionsContainer.appendChild(questionDiv);
+    }
+  </script>
+</body>
+</html>
